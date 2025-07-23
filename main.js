@@ -24,12 +24,7 @@ function handleInput(input) {
             clearState();
         }
         
-        if (currentOperator == '' ) {
-            firstOperand = display.textContent;
-        }
-        else {
-            secondOperand = display.textContent;
-        }
+        updateOperands();
     }
     else if (['+', '-', '*', '/'].includes(input)) {
         if (secondOperand != '') {
@@ -47,12 +42,7 @@ function handleInput(input) {
 
         if (lastInput == '=') return;
 
-        if (currentOperator == '' ) {
-            firstOperand = display.textContent;
-        }
-        else {
-            secondOperand = display.textContent;
-        }
+        updateOperands();
     }
     else if (input == '=' || input == 'Enter') {
         if (['+', '-', '*', '/'].includes(lastInput)) {
@@ -81,24 +71,14 @@ function handleInput(input) {
             display.textContent = 0;
         }
 
-        if (currentOperator == '' ) {
-            firstOperand = display.textContent;
-        }
-        else {
-            secondOperand = display.textContent;
-        }
+        updateOperands();
     }
     else if (input == '+/-') {
         let negatedValue = -(+display.textContent);
 
         display.textContent = negatedValue;
 
-        if (currentOperator == '' ) {
-            firstOperand = display.textContent;
-        }
-        else {
-            secondOperand = display.textContent;
-        }
+        updateOperands();
     }
 
     lastInput = input;
@@ -111,6 +91,15 @@ function mapKey(key) {
         case 'Escape': return 'ac';
         case 'Delete': return 'ce';
         default: return key;
+    }
+}
+
+function updateOperands() {
+    if (currentOperator == '' ) {
+        firstOperand = display.textContent;
+    }
+    else {
+        secondOperand = display.textContent;
     }
 }
 
