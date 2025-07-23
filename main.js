@@ -3,27 +3,24 @@ let currentOperator = '';
 let secondOperand = '';
 
 const display = document.querySelector('.display');
-let lastButtonId = '';
+let lastInput = '';
 
-document.querySelector(".button-container").addEventListener('click', handleButtonClick);
+document.querySelector(".button-container").addEventListener('click', (e) => handleInput(e.target.id));
+document.addEventListener('keydown', (e) => {
+    if (e.key == '/') e.preventDefault(); // Prevent firefox from opening quick search
+    handleInput(mapKey(e.key));
+});
 
-function handleButtonClick(e) {
-    let buttonId = e.target.id;
-
-    if (!buttonId) {
-        return;
-    }
-
-    if (!Number.isNaN(+buttonId)) {
-        if (display.textContent == '0' || ['+', '-', '*', '/', '='].includes(lastButtonId)) {
-            display.textContent = buttonId;
-            shouldResetDisplay = false;
+function handleInput(input) {
+    if (!Number.isNaN(+input)) {
+        if (display.textContent == '0' || ['+', '-', '*', '/', '='].includes(lastInput)) {
+            display.textContent = input;
         }
         else {
-            display.textContent += buttonId;
+            display.textContent += input;
         }
 
-        if (lastButtonId == '=') {
+        if (lastInput == '=') {
             clearState();
         }
         
@@ -34,14 +31,21 @@ function handleButtonClick(e) {
             secondOperand = display.textContent;
         }
     }
-    else if (buttonId == 'ac') {
+    else if (['+', '-', '*', '/'].includes(input)) {
+        if (secondOperand != '') {
+            evaluateExpression();
+        }
+
+        currentOperator = input;
+    }
+    else if (input == 'ac') {
         clearState();
         display.textContent = '0';
     }
-    else if (buttonId == 'ce') {
+    else if (input == 'ce') {
         display.textContent = '0';
 
-        if (lastButtonId == '=') return;
+        if (lastInput == '=') return;
 
         if (currentOperator == '' ) {
             firstOperand = display.textContent;
@@ -50,8 +54,8 @@ function handleButtonClick(e) {
             secondOperand = display.textContent;
         }
     }
-    else if (buttonId == '=') {
-        if (['+', '-', '*', '/'].includes(lastButtonId)) {
+    else if (input == '=' || input == 'Enter') {
+        if (['+', '-', '*', '/'].includes(lastInput)) {
             secondOperand = firstOperand;
         }
 
@@ -59,8 +63,8 @@ function handleButtonClick(e) {
             evaluateExpression();
         }
     }
-    else if (buttonId == '.') {
-        if (lastButtonId == '=') {
+    else if (input == '.') {
+        if (lastInput == '=') {
             clearState();
             display.textContent = '0';
         }
@@ -69,7 +73,7 @@ function handleButtonClick(e) {
             display.textContent += '.';
         }
     }
-    else if (buttonId == 'b') {
+    else if (input == 'b' || input == 'Backspace') {
         if (display.textContent.length > 1) {
             display.textContent = display.textContent.slice(0, -1);
         }
@@ -84,7 +88,7 @@ function handleButtonClick(e) {
             secondOperand = display.textContent;
         }
     }
-    else if (buttonId == '+/-') {
+    else if (input == '+/-') {
         let negatedValue = -(+display.textContent);
 
         display.textContent = negatedValue;
@@ -96,20 +100,18 @@ function handleButtonClick(e) {
             secondOperand = display.textContent;
         }
     }
-    else {
-        if (secondOperand != '') {
-            evaluateExpression();
-        }
 
-        currentOperator = buttonId;
+    lastInput = input;
+}
+
+function mapKey(key) {
+    switch (key) {
+        case 'Backspace': return 'b';
+        case 'Enter': return '=';
+        case 'Escape': return 'ac';
+        case 'Delete': return 'ce';
+        default: return key;
     }
-
-    lastButtonId = buttonId;
-
-    console.log("firstOperand: " + firstOperand);
-    console.log("currentOperator: " + currentOperator);
-    console.log("secondOperand: " + secondOperand);
-    console.log("lastButtonId: " + lastButtonId);
 }
 
 function evaluateExpression() {
