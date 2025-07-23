@@ -1,3 +1,5 @@
+const operators = ['+', '-', '*', '/'];
+
 let firstOperand = '';
 let currentOperator = '';
 let secondOperand = '';
@@ -13,7 +15,8 @@ document.addEventListener('keydown', (e) => {
 
 function handleInput(input) {
     if (!Number.isNaN(+input)) {
-        if (display.textContent == '0' || ['+', '-', '*', '/', '='].includes(lastInput)) {
+        if (display.textContent == '0' || lastInput == '=' || 
+            operators.includes(lastInput)) {
             display.textContent = input;
         }
         else {
@@ -26,7 +29,7 @@ function handleInput(input) {
         
         updateOperands();
     }
-    else if (['+', '-', '*', '/'].includes(input)) {
+    else if (operators.includes(input)) {
         if (secondOperand != '') {
             evaluateExpression();
         }
@@ -44,8 +47,8 @@ function handleInput(input) {
 
         updateOperands();
     }
-    else if (input == '=' || input == 'Enter') {
-        if (['+', '-', '*', '/'].includes(lastInput)) {
+    else if (input == '=') {
+        if (operators.includes(lastInput)) {
             secondOperand = firstOperand;
         }
 
@@ -63,7 +66,7 @@ function handleInput(input) {
             display.textContent += '.';
         }
     }
-    else if (input == 'b' || input == 'Backspace') {
+    else if (input == 'b') {
         if (display.textContent.length > 1) {
             display.textContent = display.textContent.slice(0, -1);
         }
@@ -73,7 +76,7 @@ function handleInput(input) {
 
         updateOperands();
     }
-    else if (input == '+/-') {
+    else if (input == 'n') {
         let negatedValue = -(+display.textContent);
 
         display.textContent = negatedValue;
