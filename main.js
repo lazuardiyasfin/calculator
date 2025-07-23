@@ -34,9 +34,21 @@ function handleButtonClick(e) {
             secondOperand = display.textContent;
         }
     }
-    else if (buttonId == 'c') {
+    else if (buttonId == 'ac') {
         clearState();
         display.textContent = '0';
+    }
+    else if (buttonId == 'ce') {
+        display.textContent = '0';
+
+        if (lastButtonId == '=') return;
+
+        if (currentOperator == '' ) {
+            firstOperand = display.textContent;
+        }
+        else {
+            secondOperand = display.textContent;
+        }
     }
     else if (buttonId == '=') {
         if (['+', '-', '*', '/'].includes(lastButtonId)) {
@@ -45,6 +57,43 @@ function handleButtonClick(e) {
 
         if (currentOperator != '') {
             evaluateExpression();
+        }
+    }
+    else if (buttonId == '.') {
+        if (lastButtonId == '=') {
+            clearState();
+            display.textContent = '0';
+        }
+
+        if (!display.textContent.includes('.')) {
+            display.textContent += '.';
+        }
+    }
+    else if (buttonId == 'b') {
+        if (display.textContent.length > 1) {
+            display.textContent = display.textContent.slice(0, -1);
+        }
+        else {
+            display.textContent = 0;
+        }
+
+        if (currentOperator == '' ) {
+            firstOperand = display.textContent;
+        }
+        else {
+            secondOperand = display.textContent;
+        }
+    }
+    else if (buttonId == '+/-') {
+        let negatedValue = -(+display.textContent);
+
+        display.textContent = negatedValue;
+
+        if (currentOperator == '' ) {
+            firstOperand = display.textContent;
+        }
+        else {
+            secondOperand = display.textContent;
         }
     }
     else {
