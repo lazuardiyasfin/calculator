@@ -35,6 +35,11 @@ function handleInput(input) {
         updateOperands();
     }
     else if (operators.includes(input)) {
+        if (lastInput == 'n') {
+            currentOperator = '';
+            secondOperand = '';
+        }
+
         if (secondOperand != '') {
             evaluateExpression();
         }
@@ -102,7 +107,12 @@ function handleInput(input) {
 
         display.textContent = negatedValue;
 
-        updateOperands();
+        if (lastInput == '=') {
+            firstOperand = display.textContent;
+        }
+        else {
+            updateOperands();
+        }
     }
     else {
         return;
