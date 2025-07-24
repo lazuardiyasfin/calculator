@@ -104,6 +104,9 @@ function handleInput(input) {
 
         updateOperands();
     }
+    else {
+        return;
+    }
 
     lastInput = input;
 }
