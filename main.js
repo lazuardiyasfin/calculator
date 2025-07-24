@@ -7,8 +7,13 @@ let secondOperand = '';
 const display = document.querySelector('.display');
 let lastInput = '';
 
-document.querySelector(".button-container").addEventListener('click', (e) => handleInput(e.target.id));
-document.addEventListener('keydown', (e) => {
+document.querySelector(".button-container").addEventListener('click', (e) => {
+    e.target.blur();
+    if (e.target.id) handleInput(e.target.id);
+});
+
+window.addEventListener('keydown', (e) => {
+    if (e.ctrlKey) return;
     if (e.key == '/') e.preventDefault(); // Prevent firefox from opening quick search
     handleInput(mapKey(e.key));
 });
