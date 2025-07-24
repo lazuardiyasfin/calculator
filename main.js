@@ -114,16 +114,20 @@ function updateOperands() {
 function evaluateExpression() {
     let result = operate(firstOperand, secondOperand, currentOperator);
 
-    if (result.toString().length > 7) {
-        result = parseFloat(result).toExponential(6);
-    }
-
-    display.textContent = result;
-
-    if (result == Infinity) {
+    if (!Number.isFinite(result)) {
+        display.textContent = result;
         clearState();
         return;
     }
+
+    if (Math.abs(result) >= 10 ** 9 || Math.abs(result) <= 10 ** (-3)) {
+        result = result.toExponential(6);
+    }
+    else {
+        result = parseFloat(result.toPrecision(11));
+    }
+
+    display.textContent = result;
 
     firstOperand = display.textContent;
 }
