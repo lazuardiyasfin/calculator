@@ -51,9 +51,10 @@ function handleInput(input) {
         display.textContent = '0';
     }
     else if (input == 'ce') {
+        if (lastInput == '=') {
+            clearState();
+        }
         display.textContent = '0';
-
-        if (lastInput == '=') return;
 
         updateOperands();
     }
@@ -72,16 +73,26 @@ function handleInput(input) {
             display.textContent = '0';
         }
 
+        if (operators.includes(lastInput)) {
+            display.textContent = '0.';
+        }
+
         if (!display.textContent.includes('.')) {
             display.textContent += '.';
         }
+
+        updateOperands();
     }
     else if (input == 'b') {
-        if (display.textContent.length > 1) {
+        if (lastInput == '=') {
+            clearState();
+            display.textContent = '0';
+        }
+        else if (display.textContent.length > 1) {
             display.textContent = display.textContent.slice(0, -1);
         }
         else {
-            display.textContent = 0;
+            display.textContent = '0';
         }
 
         updateOperands();
