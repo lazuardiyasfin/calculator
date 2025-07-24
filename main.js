@@ -39,6 +39,11 @@ function handleInput(input) {
             evaluateExpression();
         }
 
+        if (!Number.isFinite(+display.textContent)) {
+            display.textContent = '0';
+            firstOperand = display.textContent;
+        }
+
         currentOperator = input;
     }
     else if (input == 'ac') {
