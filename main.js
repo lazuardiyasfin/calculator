@@ -149,7 +149,10 @@ function evaluateExpression() {
         return;
     }
 
-    if (Math.abs(result) >= 10 ** 9 || Math.abs(result) <= 10 ** (-3)) {
+    if (result == 0) {
+        result = 0;
+    }
+    else if (Math.abs(result) >= 10 ** 9 || Math.abs(result) <= 10 ** (-3)) {
         result = result.toExponential(6);
     }
     else {
